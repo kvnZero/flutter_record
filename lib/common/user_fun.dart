@@ -13,7 +13,13 @@ class UserFun{
       Response response = await Dio().post(
           "${this.serverUrl}token",data: data);
       if(response.data['status']==200){
-        return {'user': User.fromJson(response.data['user']),'msg':response.data['message']};
+        if(response.data['otheruser']==null) {
+          return {
+            'user': User.fromJson(response.data['user']),
+            'msg': response.data['message']
+          };
+        }
+        return {'user': User.fromJson(response.data['user']),'otheruser': User.fromJson(response.data['otheruser']),'msg':response.data['message']};
       }else{
         return {'msg':response.data['message']};
       }
@@ -31,7 +37,13 @@ class UserFun{
       Response response = await Dio().post("${this.serverUrl}login",
           data: data);
       if(response.data['status']==200){
-        return {'user': User.fromJson(response.data['user']),'msg':'登陆成功'};
+        if(response.data['otheruser']==null) {
+          return {
+            'user': User.fromJson(response.data['user']),
+            'msg': response.data['message']
+          };
+        }
+        return {'user': User.fromJson(response.data['user']),'otheruser': User.fromJson(response.data['otheruser']),'msg':'登陆成功'};
       }else{
         return {'msg':response.data['message']};
       }
