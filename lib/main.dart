@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:record/data/model/auth.dart';
 import 'package:record/ui/page/user/login.dart';
 import 'package:provider/provider.dart';
-import 'ui/page/index/index_home.dart';
+import 'ui/page/index.dart';
 
 void main(){
   runApp(MyApp());
@@ -63,7 +63,7 @@ class _SalashPageState extends State<SalashPage> {
   void goToHomePage(){
     Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context)=>Consumer<AuthModel>(builder: (context, user, child) {
       if (user?.user != null) {
-        return new IndexHomePage();
+        return new Index();
       }else{
         return new LoginPage();
       }
