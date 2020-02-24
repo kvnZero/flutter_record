@@ -26,6 +26,10 @@ class _RecordWidgetState extends State<RecordWidget> {
           elevation: 0.5,
           child: Padding(padding: EdgeInsets.all(5),child: Text("这个啊啊啊啊啊啊啊啊啊啊啊是内容"),)),
     );
+    Widget timeShow = Container(
+      margin: record['show'] == 'left' ? EdgeInsets.only(left: 10): EdgeInsets.only(right: 10),
+      child: Text("2020年02月22日",style: TextStyle(fontSize: 12,color: Colors.black26),),
+    );
     Widget lineShow = record['show'] == 'left' ?
     Transform.rotate(angle: pi,
       child: new CustomPaint(
@@ -33,30 +37,38 @@ class _RecordWidgetState extends State<RecordWidget> {
       ) :
     new CustomPaint(
         painter: new MyPainter(colors:Colors.pink[200]));
-    return record['show'] == 'left' ? Container(
-        decoration: new BoxDecoration(
-            border: new Border(right: BorderSide(width: 2.0, color: Colors.blue[200]),)
-        ),
-        margin: EdgeInsets.only(right: MediaQuery.of(context).size.width/2-1),
-        child:Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+    return record['show'] == 'left' ? Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Container(
+            decoration: new BoxDecoration(
+                border: new Border(right: BorderSide(width: 2.0, color: Colors.blue[200]),)
+            ),
+            child:Row(
               children: <Widget>[
                 recordBody,
-                Padding(padding: EdgeInsets.only(left: 5),child: lineShow,)
+                Container(margin: EdgeInsets.only(right: 9),child: lineShow,),
               ],
             )
-        ) : Container(
-        decoration: new BoxDecoration(
-            border: new Border(left: BorderSide(width: 2.0, color: Colors.pink[200]),)
         ),
-        margin: EdgeInsets.only(left: MediaQuery.of(context).size.width/2-1),
-        child:Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Padding(padding: EdgeInsets.only(right: 5),child: lineShow,),
-            recordBody,
-          ],
+        timeShow
+      ],
+    ) : Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        timeShow,
+        Container(
+            decoration: new BoxDecoration(
+                border: new Border(left: BorderSide(width: 2.0, color: Colors.pink[200]),)
+            ),
+            child:Row(
+              children: <Widget>[
+                Container(margin: EdgeInsets.only(left: 9),child: lineShow,),
+                recordBody,
+              ],
+            )
         )
+      ],
     );
   }
 }
