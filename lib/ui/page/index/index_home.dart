@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:record/data/model/auth.dart';
 import 'package:record/data/classes/user.dart';
+import 'package:record/ui/widget/record_widget.dart';
 
 class IndexHomePage extends StatefulWidget {
   @override
@@ -11,21 +12,19 @@ class IndexHomePage extends StatefulWidget {
 class _IndexHomePageState extends State<IndexHomePage> {
   ScrollController _controller = new ScrollController();
   User myUser, otherUser;
+  bool showText = false;
   String _leftText,_rightText;
-  String leftText='',rightText='';
 
   @override
   void initState() {
     _controller.addListener((){
-      if(_controller.offset>120){
+      if(_controller.offset>100){
         setState(() {
-          leftText=_leftText;
-          rightText=_rightText;
+          showText=true;
         });
       }else{
         setState(() {
-          leftText="";
-          rightText="";
+          showText=false;
         });
       }
     });
@@ -52,14 +51,24 @@ class _IndexHomePageState extends State<IndexHomePage> {
           )
         ];
       },
-      body: ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text("标题$index"),
-          );
-        },
-        itemCount: 50,
-      ),
+      body: Container(
+        margin: EdgeInsets.only(top: 10),
+        child: ListView(
+          padding: EdgeInsets.all(0),
+          children: <Widget>[
+            RecordWidget(record: {'show':'left'}),
+            RecordWidget(record: {'show':'left'}),
+            RecordWidget(record: {'show':'right'}),
+            RecordWidget(record: {'show':'left'}),
+            RecordWidget(record: {'show':'left'}),
+            RecordWidget(record: {'show':'right'}),
+            RecordWidget(record: {'show':'right'}),
+            RecordWidget(record: {'show':'right'}),
+            RecordWidget(record: {'show':'left'}),
+            RecordWidget(record: {'show':'right'}),
+          ],
+        ),
+      )
     ));
   }
 
@@ -86,7 +95,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
                     ),
                   ),),
                 Container(
-                    child: Text(leftText,style: TextStyle(fontSize: 14,color: Colors.black26),),
+                    child: Text(showText ? _leftText : '',style: TextStyle(fontSize: 14,color: Colors.black26),),
                     width: MediaQuery.of(context).size.width/2-80
                 )
               ],
@@ -94,7 +103,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
           Row(
             children: <Widget>[
               Container(
-                  child: Text(rightText,style: TextStyle(fontSize: 14,color: Colors.black26),),
+                  child: Text(showText ? _rightText : '',style: TextStyle(fontSize: 14,color: Colors.black26),),
                   width: MediaQuery.of(context).size.width/2-80
               ),
               Container(
