@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:record/data/classes/user.dart';
+import 'package:record/data/classes/bind.dart';
 
 class UserFun{
   String serverUrl = 'http://192.168.1.5:8000/';
@@ -12,14 +13,16 @@ class UserFun{
     try {
       Response response = await Dio().post(
           "${this.serverUrl}token",data: data);
+      Map otherInfo={};
       if(response.data['status']==200){
-        if(response.data['otheruser']==null) {
-          return {
-            'user': User.fromJson(response.data['user']),
-            'msg': response.data['message']
-          };
+        if(response.data['bind']!=null) {
+          otherInfo.addAll({'bind':Bind.fromJson(response.data['bind']),});
         }
-        return {'user': User.fromJson(response.data['user']),'otheruser': User.fromJson(response.data['otheruser']),'msg':response.data['message']};
+        if(response.data['otheruser']!=null) {
+          otherInfo.addAll({'otheruser':User.fromJson(response.data['otheruser']),});
+        }
+        otherInfo.addAll({'user': User.fromJson(response.data['user']),'msg':response.data['message']});
+        return otherInfo;
       }else{
         return {'msg':response.data['message']};
       }
@@ -36,14 +39,16 @@ class UserFun{
     try {
       Response response = await Dio().post("${this.serverUrl}login",
           data: data);
+      Map otherInfo={};
       if(response.data['status']==200){
-        if(response.data['otheruser']==null) {
-          return {
-            'user': User.fromJson(response.data['user']),
-            'msg': response.data['message']
-          };
+        if(response.data['bind']!=null) {
+          otherInfo.addAll({'bind':Bind.fromJson(response.data['bind']),});
         }
-        return {'user': User.fromJson(response.data['user']),'otheruser': User.fromJson(response.data['otheruser']),'msg':'登陆成功'};
+        if(response.data['otheruser']!=null) {
+          otherInfo.addAll({'otheruser':User.fromJson(response.data['otheruser']),});
+        }
+        otherInfo.addAll({'user': User.fromJson(response.data['user']),'msg':response.data['message']});
+        return otherInfo;
       }else{
         return {'msg':response.data['message']};
       }

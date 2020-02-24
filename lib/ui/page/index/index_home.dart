@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:record/data/model/auth.dart';
 import 'package:record/data/classes/user.dart';
 import 'package:record/ui/widget/record_widget.dart';
+import 'package:record/common/record_fun.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class IndexHomePage extends StatefulWidget {
   @override
@@ -14,9 +17,12 @@ class _IndexHomePageState extends State<IndexHomePage> {
   User myUser, otherUser;
   bool showText = false;
   String _leftText,_rightText;
+  var _saveUser, _saveBind;
+  List recordData = [];
 
   @override
   void initState() {
+    addRecordData();
     _controller.addListener((){
       if(_controller.offset>100){
         setState(() {
@@ -30,6 +36,21 @@ class _IndexHomePageState extends State<IndexHomePage> {
     });
     // TODO: implement initState
     super.initState();
+  }
+
+  void addRecordData() async{
+    if(_saveUser==null){
+      var _prefs = await SharedPreferences.getInstance();
+      _saveUser = json.decode(_prefs.getString('user_data'));
+      _saveBind = json.decode(_prefs.getString('bind_data'));
+    }
+    Future<Map> result =  RecordFun().getRecord(_saveBind['id'].toString(), _saveUser['id'].toString());
+    result.then((e){
+      setState(() {
+        recordData.addAll(e['data']);
+      });
+      print(recordData);
+    });
   }
 
   @override
@@ -53,21 +74,11 @@ class _IndexHomePageState extends State<IndexHomePage> {
       },
       body: Container(
         margin: EdgeInsets.only(top: 10),
-        child: ListView(
-          padding: EdgeInsets.all(0),
-          children: <Widget>[
-            RecordWidget(record: {'show':'left'}),
-            RecordWidget(record: {'show':'left'}),
-            RecordWidget(record: {'show':'right'}),
-            RecordWidget(record: {'show':'left'}),
-            RecordWidget(record: {'show':'left'}),
-            RecordWidget(record: {'show':'right'}),
-            RecordWidget(record: {'show':'right'}),
-            RecordWidget(record: {'show':'right'}),
-            RecordWidget(record: {'show':'left'}),
-            RecordWidget(record: {'show':'right'}),
-          ],
-        ),
+        child: ListView.builder(
+          padding: EdgeInsets.only(top:10),
+          itemCount: recordData.length,itemBuilder: (context, index) {
+          return RecordWidget(record: recordData[index]);
+        },),
       )
     ));
   }
@@ -165,7 +176,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
             ),
             Container(
               margin: EdgeInsets.only(top: 10),
-              child: Text("这里填写共用的简介信息",style: TextStyle(fontSize: 16),),
+              child: Text("这里可以写在一天多少天，记录了多少条事件",style: TextStyle(fontSize: 16),),
             )
           ],
         );
