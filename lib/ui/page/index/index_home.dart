@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:record/common/bind_fun.dart';
 import 'package:record/data/model/auth.dart';
 import 'package:record/data/classes/user.dart';
 import 'package:record/ui/widget/record_widget.dart';
@@ -37,6 +38,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
     // TODO: implement initState
     super.initState();
     addRecordData();
+    getMsgData();
   }
 
   void addRecordData() async{
@@ -58,6 +60,46 @@ class _IndexHomePageState extends State<IndexHomePage> {
         setState(() {
           recordData.addAll(e['data']);
         });
+      });
+    }
+  }
+
+  void getMsgData() async{
+    if(_saveUser==null) {
+      var _prefs = await SharedPreferences.getInstance();
+      _saveUser = json.decode(_prefs.getString('user_data'));
+    }
+    if(_saveBind==null) {
+      Future<Map> result = BindFun().getRecord(_saveUser['id'].toString());
+      result.then((e){
+        if(e['data']['status']==200){
+          if(e['data']['bind']['user_id_to']==_saveUser['id']){
+            if(e['data']['bind']['status']==0){
+              print("收到一个请求消息");
+              //这里弹出一个窗口 请求连接
+              showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("收到连接请求"),
+                    content: Text("收到一条链接请求啦, 去看看伐?"),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("忽略"),
+                        onPressed: () => Navigator.of(context).pop(), //关闭对话框
+                      ),
+                      FlatButton(
+                        child: Text("去瞧瞧"),
+                        onPressed: () {
+                          //跳转子页面
+                        },
+                      ),
+                    ],
+                  );
+                });
+            }
+          }
+        }
       });
     }
   }
@@ -89,8 +131,15 @@ class _IndexHomePageState extends State<IndexHomePage> {
           itemCount: recordData.length,itemBuilder: (context, index) {
           return RecordWidget(record: recordData[index]);
         },),
+      )),
+      floatingActionButton: _saveBind == null ? Container() : FloatingActionButton(
+        tooltip: 'Add',
+        child: Icon(Icons.add),
+        onPressed: (){
+          print("1");
+        },
       )
-    ));
+    );
   }
 
   Widget titleShow(){
@@ -115,6 +164,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
                     ),
                   ),),
                 Container(
+                  alignment: Alignment.centerLeft,
                     child: Text(_leftText,style: TextStyle(fontSize: Adapt.px(24),color: Colors.black26),),
                     width: MediaQuery.of(context).size.width/2-80
                 )
@@ -123,6 +173,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
           Row(
             children: <Widget>[
               Container(
+                  alignment: Alignment.centerRight,
                   child: Text(_rightText,style: TextStyle(fontSize: Adapt.px(24),color: Colors.black26),),
                   width: MediaQuery.of(context).size.width/2-80
               ),
