@@ -6,6 +6,7 @@ import 'package:record/ui/widget/record_widget.dart';
 import 'package:record/common/record_fun.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:record/common/adapt.dart';
 
 class IndexHomePage extends StatefulWidget {
   @override
@@ -22,7 +23,6 @@ class _IndexHomePageState extends State<IndexHomePage> {
 
   @override
   void initState() {
-    addRecordData();
     _controller.addListener((){
       if(_controller.offset>100){
         setState(() {
@@ -36,21 +36,31 @@ class _IndexHomePageState extends State<IndexHomePage> {
     });
     // TODO: implement initState
     super.initState();
+    addRecordData();
   }
 
   void addRecordData() async{
+    String bindData;
+    var _prefs = await SharedPreferences.getInstance();
     if(_saveUser==null){
       var _prefs = await SharedPreferences.getInstance();
       _saveUser = json.decode(_prefs.getString('user_data'));
-      _saveBind = json.decode(_prefs.getString('bind_data'));
     }
-    Future<Map> result =  RecordFun().getRecord(_saveBind['id'].toString(), _saveUser['id'].toString());
-    result.then((e){
-      setState(() {
-        recordData.addAll(e['data']);
+    if(_saveBind==null) {
+      bindData = (_prefs.getString('bind_data'));
+      if(bindData != null){
+        _saveBind = json.decode(bindData);
+      }
+    }
+    if(_saveBind != null && _saveUser!= null){
+      Future<Map> result =  RecordFun().getRecord(_saveBind['id'].toString(), _saveUser['id'].toString());
+      result.then((e){
+        setState(() {
+          recordData.addAll(e['data']);
+        });
+        print(recordData);
       });
-      print(recordData);
-    });
+    }
   }
 
   @override
@@ -61,7 +71,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
       headerSliverBuilder: (BuildContext context, bool isScrolled) {
         return <Widget>[
           SliverAppBar(
-            expandedHeight: 170,
+            expandedHeight: Adapt.px(350),
             floating: true,
             snap: false,
             pinned: true,
