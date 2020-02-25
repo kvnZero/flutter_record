@@ -58,7 +58,6 @@ class _IndexHomePageState extends State<IndexHomePage> {
         setState(() {
           recordData.addAll(e['data']);
         });
-        print(recordData);
       });
     }
   }
@@ -71,12 +70,13 @@ class _IndexHomePageState extends State<IndexHomePage> {
       headerSliverBuilder: (BuildContext context, bool isScrolled) {
         return <Widget>[
           SliverAppBar(
+            elevation: 0.5,
             expandedHeight: Adapt.px(350),
             floating: true,
             snap: false,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.only(top:50),
+              titlePadding: EdgeInsets.only(bottom: 5),
                 title: titleShow(),
                 background: infoShow()),
           )
