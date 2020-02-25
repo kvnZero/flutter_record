@@ -95,19 +95,18 @@ class _IndexHomePageState extends State<IndexHomePage> {
 
   Widget titleShow(){
     return Container(
-      height: 50,
-      child:
-      Consumer<AuthModel>(builder: (context,user,child){
+      height: Adapt.px(60),
+      child: Consumer<AuthModel>(builder: (context,user,child){
         _leftText = user.user.nickname;
         _rightText = user.otherUser==null ? '快来邀请另一半使用' : user.otherUser.nickname;
-        return Row(
+        return showText==false ? Container() : Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Row(
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10),
-                  height: 40,width: 40,
+                  height: Adapt.px(50),width: Adapt.px(50),
                   child: ClipRRect( //剪裁为圆角矩形
                     borderRadius: BorderRadius.circular(90.0),
                     child: Image.network(
@@ -116,7 +115,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
                     ),
                   ),),
                 Container(
-                    child: Text(showText ? _leftText : '',style: TextStyle(fontSize: 14,color: Colors.black26),),
+                    child: Text(_leftText,style: TextStyle(fontSize: Adapt.px(24),color: Colors.black26),),
                     width: MediaQuery.of(context).size.width/2-80
                 )
               ],
@@ -124,12 +123,12 @@ class _IndexHomePageState extends State<IndexHomePage> {
           Row(
             children: <Widget>[
               Container(
-                  child: Text(showText ? _rightText : '',style: TextStyle(fontSize: 14,color: Colors.black26),),
+                  child: Text(_rightText,style: TextStyle(fontSize: Adapt.px(24),color: Colors.black26),),
                   width: MediaQuery.of(context).size.width/2-80
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
-                height: 40,width: 40,
+                height: Adapt.px(50),width: Adapt.px(50),
                 child: ClipRRect( //剪裁为圆角矩形
                   borderRadius: BorderRadius.circular(90.0),
                   child: Image.network(
