@@ -8,6 +8,7 @@ import 'package:record/common/record_fun.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:record/common/adapt.dart';
+import 'package:record/ui/page/bind/bind_show.dart';
 
 class IndexHomePage extends StatefulWidget {
   @override
@@ -92,6 +93,10 @@ class _IndexHomePageState extends State<IndexHomePage> {
                         child: Text("去瞧瞧"),
                         onPressed: () {
                           //跳转子页面
+                          Navigator.of(context).pop();
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return BindShowPage(bindId: _saveBind['id'],);
+                          }));
                         },
                       ),
                     ],
