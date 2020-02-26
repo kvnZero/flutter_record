@@ -30,16 +30,18 @@ class _BindShowPageState extends State<BindShowPage> {
       setState(() {
         bindList = e['data']['bind'][0];
       });
-      print(bindList);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     if(bindList==null){
-      return Center(
-        // CircularProgressIndicator是一个圆形的Loading进度条
-        child: CircularProgressIndicator(),
+      return Container(
+        color: Colors.white,
+        child: Center(
+          // CircularProgressIndicator是一个圆形的Loading进度条
+          child: CircularProgressIndicator(),
+        ),
       );
     }
     return Scaffold(
