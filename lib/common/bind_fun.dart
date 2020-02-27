@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class BindFun{
   String serverUrl = 'http://192.168.1.5:8000/';
-  Future<Map> getRecord(String userId,{Map other}) async {
+  Future<Map> getBind(String userId,{Map other}) async {
     Map data = {'user_id': userId};
     if (other != null) {
       data.addAll(other);
@@ -16,7 +16,7 @@ class BindFun{
       return {'msg': '无法连接到服务器'};
     }
   }
-  Future<Map> getRecordMore(String bindId,{Map other}) async {
+  Future<Map> getBindMore(String bindId,{Map other}) async {
     Map data = {'bind_id': bindId};
     if (other != null) {
       data.addAll(other);

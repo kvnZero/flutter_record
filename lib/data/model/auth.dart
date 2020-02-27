@@ -23,6 +23,9 @@ class AuthModel extends ChangeNotifier{
       if (_newUser['otheruser'] != null) {
         _otherUser = _newUser['otheruser'];
         notifyListeners();
+      }else{
+        _otherUser = null;
+        notifyListeners();
       }
       if (_newUser['bind'] != null) {
         SharedPreferences.getInstance().then((prefs) {
@@ -30,6 +33,10 @@ class AuthModel extends ChangeNotifier{
           prefs.setString("bind_data", _bindsave);
         });
         _bind = _newUser['bind'];
+        notifyListeners();
+      }else{
+        _prefs.remove('bind_data');
+        _bind = null;
         notifyListeners();
       }
       if (_newUser['user']?.token == null || _newUser['user'].token.isEmpty) return _newUser['msg'];

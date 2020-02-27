@@ -21,6 +21,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
   bool showText = false;
   String _leftText,_rightText;
   var _saveUser, _saveBind;
+  int bindDay;
   List recordData = [];
 
   @override
@@ -53,6 +54,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
       bindData = (_prefs.getString('bind_data'));
       if(bindData != null){
         _saveBind = json.decode(bindData);
+        bindDay =  DateTime.now().difference(DateTime.parse(_saveBind['bind_time'])).inDays + 1;
       }
     }
     if(_saveBind != null && _saveUser!= null){
@@ -71,7 +73,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
       _saveUser = json.decode(_prefs.getString('user_data'));
     }
     if(_saveBind==null) {
-      Future<Map> result = BindFun().getRecord(_saveUser['id'].toString());
+      Future<Map> result = BindFun().getBind(_saveUser['id'].toString());
       result.then((e){
         if(e['data']['status']==200){
           if(e['data']['bind']['user_id_to']==_saveUser['id']){
@@ -95,7 +97,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
                           //跳转子页面
                           Navigator.of(context).pop();
                           Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return BindShowPage(bindId: _saveBind['id'],);
+                            return BindShowPage(bindId: e['data']['bind']['id'],);
                           }));
                         },
                       ),
@@ -131,7 +133,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
       },
       body: Container(
         margin: EdgeInsets.only(top: 10),
-        child: ListView.builder(
+        child: recordData.length==0 ? Center(child: Text("记录现在是空哒ovo"),) :  ListView.builder(
           padding: EdgeInsets.only(top:10),
           itemCount: recordData.length,itemBuilder: (context, index) {
           return RecordWidget(record: recordData[index]);
@@ -165,7 +167,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
                     borderRadius: BorderRadius.circular(90.0),
                     child: Image.network(
                       user.user.avater,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                   ),),
                 Container(
@@ -187,9 +189,10 @@ class _IndexHomePageState extends State<IndexHomePage> {
                 height: Adapt.px(50),width: Adapt.px(50),
                 child: ClipRRect( //剪裁为圆角矩形
                   borderRadius: BorderRadius.circular(90.0),
-                  child: Image.network(
-                    user.otherUser==null ? 'https://i02piccdn.sogoucdn.com/45839b27bec0c9ef': user.otherUser.avater,
-                    fit: BoxFit.fill,
+                  child: user.otherUser==null ? Image.asset('images/static/nullright.png',fit: BoxFit.fill,) :
+                  Image.network(
+                    user.otherUser.avater,
+                    fit: BoxFit.cover,
                   ),
                 ),),
             ],
@@ -218,7 +221,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
                         borderRadius: BorderRadius.circular(90.0),
                         child: Image.network(
                           user.user.avater,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         ),
                       ),),
                     Text(user.user.nickname),
@@ -229,9 +232,10 @@ class _IndexHomePageState extends State<IndexHomePage> {
                     Container(height: 100,width: 100,
                       child: ClipRRect( //剪裁为圆角矩形
                         borderRadius: BorderRadius.circular(90.0),
-                        child: Image.network(
-                          user.otherUser==null ? 'https://i02piccdn.sogoucdn.com/45839b27bec0c9ef': user.otherUser.avater,
-                          fit: BoxFit.fill,
+                        child: user.otherUser==null ? Image.asset('images/static/nullright.png',fit: BoxFit.fill,) :
+                        Image.network(
+                          user.otherUser.avater,
+                          fit: BoxFit.cover,
                         ),
                       ),),
                     Text(user.otherUser==null ? '等她(他)到' : user.otherUser.nickname ),
@@ -241,7 +245,8 @@ class _IndexHomePageState extends State<IndexHomePage> {
             ),
             Container(
               margin: EdgeInsets.only(top: 10),
-              child: Text("这里可以写在一天多少天，记录了多少条事件",style: TextStyle(fontSize: 16),),
+              child: _saveBind ==null ? Text("快去邀请另一半一起记录吧(๑•̀ㅂ•́)",style: TextStyle(fontSize: 16),) :
+              Text("已经在一起$bindDay天啦，现在记录了${recordData.length}条",style: TextStyle(fontSize: 16),),
             )
           ],
         );

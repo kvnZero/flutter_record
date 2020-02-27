@@ -25,7 +25,7 @@ class _BindShowPageState extends State<BindShowPage> {
   }
 
   void loadInfo() async{
-    Future<Map> result =  BindFun().getRecordMore(bindId.toString());
+    Future<Map> result =  BindFun().getBindMore(bindId.toString());
     result.then((e){
       setState(() {
         bindList = e['data']['bind'][0];
