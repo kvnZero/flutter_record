@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:record/common/adapt.dart';
 import 'package:record/ui/page/bind/bind_show.dart';
-import 'package:toast/toast.dart';
+import 'package:record/data/event/user_update.dart';
 
 class IndexHomePage extends StatefulWidget {
   @override
@@ -45,6 +45,10 @@ class _IndexHomePageState extends State<IndexHomePage> with AutomaticKeepAliveCl
     super.initState();
     addRecordData();
     getMsgData();
+    eventBus.on<BindUpdateEvent>().listen((_) {
+      addRecordData();
+      getMsgData();
+    });
   }
 
   void addRecordData() async{
@@ -52,7 +56,9 @@ class _IndexHomePageState extends State<IndexHomePage> with AutomaticKeepAliveCl
     var _prefs = await SharedPreferences.getInstance();
     if(_saveUser==null){
       var _prefs = await SharedPreferences.getInstance();
-      _saveUser = json.decode(_prefs.getString('user_data'));
+      setState(() {
+        _saveUser = json.decode(_prefs.getString('user_data'));
+      });
     }
     if(_saveBind==null) {
       bindData = (_prefs.getString('bind_data'));
@@ -74,7 +80,9 @@ class _IndexHomePageState extends State<IndexHomePage> with AutomaticKeepAliveCl
   void getMsgData() async{
     if(_saveUser==null) {
       var _prefs = await SharedPreferences.getInstance();
-      _saveUser = json.decode(_prefs.getString('user_data'));
+      setState(() {
+        _saveUser = json.decode(_prefs.getString('user_data'));
+      });
     }
     if(_saveBind==null) {
       Future<Map> result = BindFun().getBind(_saveUser['id'].toString());
@@ -134,7 +142,7 @@ class _IndexHomePageState extends State<IndexHomePage> with AutomaticKeepAliveCl
                         child: Text("哼那算了"),
                         onPressed: () {
                           //删除状态
-                          Future<Map> result = BindFun().changeStatus(e['data']['bind']['id'].toString(),-1);
+                          BindFun().changeStatus(e['data']['bind']['id'].toString(),-1);
                           Navigator.of(context).pop();
                         },
                       ),

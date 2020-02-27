@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import 'index/index_home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-
 class Index extends StatefulWidget {
   @override
   _IndexState createState() => _IndexState();

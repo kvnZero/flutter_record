@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:record/common/bind_fun.dart';
+import 'package:record/data/model/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:record/data/event/user_update.dart';
+
 class BindShowPage extends StatefulWidget {
   const BindShowPage({
     @required this.bindId,
@@ -22,6 +26,13 @@ class _BindShowPageState extends State<BindShowPage> {
     // 加载数据
    loadInfo();
    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    eventBus.fire(BindUpdateEvent());
   }
 
   void loadInfo() async{
@@ -76,14 +87,29 @@ class _BindShowPageState extends State<BindShowPage> {
                   color: Colors.red,
                   textColor: Colors.white,
                   child: Text("拒绝链接"),
-                  onPressed: () {},
+                  onPressed: () {
+                    Future<Map> result = BindFun().changeStatus(bindId.toString(),2);
+                    result.then((e){
+                      print(e);
+                    });
+                    Navigator.of(context).pop();
+                  },
                 ),
-                RaisedButton(
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  child: Text("同意链接"),
-                  onPressed: () {},
-                )
+                Consumer<AuthModel>(builder: (context,user,child){
+                  return RaisedButton(
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    child: Text("同意链接"),
+                    onPressed: () {
+                      Future<Map> result = BindFun().changeStatus(bindId.toString(),1);
+                      result.then((e){
+                        user.loadLogged();
+                        Navigator.of(context).pop();
+                      });
+                      //这里要重新登录
+                    },
+                  );
+                })
               ],
             )
           ],
