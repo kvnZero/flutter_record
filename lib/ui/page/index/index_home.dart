@@ -9,13 +9,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:record/common/adapt.dart';
 import 'package:record/ui/page/bind/bind_show.dart';
+import 'package:toast/toast.dart';
 
 class IndexHomePage extends StatefulWidget {
   @override
   _IndexHomePageState createState() => _IndexHomePageState();
 }
 
-class _IndexHomePageState extends State<IndexHomePage> {
+class _IndexHomePageState extends State<IndexHomePage> with AutomaticKeepAliveClientMixin{
   ScrollController _controller = new ScrollController();
   User myUser, otherUser;
   bool showText = false;
@@ -23,6 +24,9 @@ class _IndexHomePageState extends State<IndexHomePage> {
   var _saveUser, _saveBind;
   int bindDay;
   List recordData = [];
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -76,9 +80,8 @@ class _IndexHomePageState extends State<IndexHomePage> {
       Future<Map> result = BindFun().getBind(_saveUser['id'].toString());
       result.then((e){
         if(e['data']['status']==200){
-          if(e['data']['bind']['user_id_to']==_saveUser['id']){
-            if(e['data']['bind']['status']==0){
-              print("收到一个请求消息");
+          if(e['data']['bind']['status']==0){
+            if(e['data']['bind']['user_id_to']==_saveUser['id']) {
               //这里弹出一个窗口 请求连接
               showDialog<bool>(
                 context: context,
@@ -106,6 +109,40 @@ class _IndexHomePageState extends State<IndexHomePage> {
                 });
             }
           }
+          if(e['data']['bind']['status']==2){
+            if(e['data']['bind']['user_id_from']==_saveUser['id']) {
+              //这里弹出一个窗口 提示被拒绝
+              showDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("呜呜呜被拒绝了",style: TextStyle(fontSize: 14),),
+                    content: Text("发送过去的请求被拒绝了\n接下来要咋办呢。"),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("重新发送"),
+                        onPressed: () {
+                          //修改状态
+                          Future<Map> result = BindFun().changeStatus(e['data']['bind']['id'].toString(),0);
+                          result.then((e){
+                            print(e);
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      FlatButton(
+                        child: Text("哼那算了"),
+                        onPressed: () {
+                          //删除状态
+                          Future<Map> result = BindFun().changeStatus(e['data']['bind']['id'].toString(),-1);
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                });
+            }
+          }
         }
       });
     }
@@ -120,7 +157,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
         return <Widget>[
           SliverAppBar(
             elevation: 0.5,
-            expandedHeight: Adapt.px(350),
+            expandedHeight: Adapt.px(250),
             floating: true,
             snap: false,
             pinned: true,
@@ -205,7 +242,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
 
   Widget infoShow() {
     return Padding(
-      padding: EdgeInsets.only(top: 50),
+      padding: EdgeInsets.only(top: Adapt.px(80)),
       child:
       Consumer<AuthModel>(builder: (context,user,child){
         return Column(
@@ -216,7 +253,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    Container(height: 100,width: 100,
+                    Container(height: Adapt.px(120),width: Adapt.px(120),
                       child: ClipRRect( //剪裁为圆角矩形
                         borderRadius: BorderRadius.circular(90.0),
                         child: Image.network(
@@ -229,7 +266,7 @@ class _IndexHomePageState extends State<IndexHomePage> {
                 ),
                 Column(
                   children: <Widget>[
-                    Container(height: 100,width: 100,
+                    Container(height: Adapt.px(120),width: Adapt.px(120),
                       child: ClipRRect( //剪裁为圆角矩形
                         borderRadius: BorderRadius.circular(90.0),
                         child: user.otherUser==null ? Image.asset('images/static/nullright.png',fit: BoxFit.fill,) :
@@ -244,9 +281,9 @@ class _IndexHomePageState extends State<IndexHomePage> {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(top: 10),
-              child: _saveBind ==null ? Text("快去邀请另一半一起记录吧(๑•̀ㅂ•́)",style: TextStyle(fontSize: 16),) :
-              Text("已经在一起$bindDay天啦，现在记录了${recordData.length}条",style: TextStyle(fontSize: 16),),
+              margin: EdgeInsets.only(top: Adapt.px(10)),
+              child: _saveBind ==null ? Text("快去邀请另一半一起记录吧(๑•̀ㅂ•́)",style: TextStyle(fontSize: Adapt.px(28)),) :
+              Text("已经在一起$bindDay天啦，现在记录了${recordData.length}条",style: TextStyle(fontSize: Adapt.px(28)),),
             )
           ],
         );
