@@ -11,12 +11,12 @@ import 'package:record/common/adapt.dart';
 import 'package:record/ui/page/bind/bind_show.dart';
 import 'package:record/data/event/user_update.dart';
 
-class IndexHomePage extends StatefulWidget {
+class RecordHomePage extends StatefulWidget {
   @override
-  _IndexHomePageState createState() => _IndexHomePageState();
+  _RecordHomePageState createState() => _RecordHomePageState();
 }
 
-class _IndexHomePageState extends State<IndexHomePage> with AutomaticKeepAliveClientMixin{
+class _RecordHomePageState extends State<RecordHomePage> with AutomaticKeepAliveClientMixin{
   ScrollController _controller = new ScrollController();
   User myUser, otherUser;
   bool showText = false;

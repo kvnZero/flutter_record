@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import 'index/index_home.dart';
+import 'record/record_home.dart';
 class Index extends StatefulWidget {
   @override
   _IndexState createState() => _IndexState();
@@ -12,16 +12,14 @@ class _IndexState extends State<Index> {
   DateTime _lastPressedAt;
 
   List<Widget> pageView = [
-    IndexHomePage(),
-    IndexHomePage(),
-    IndexHomePage(),
-    IndexHomePage(),
+    RecordHomePage(),
+    RecordHomePage(),
+    RecordHomePage(),
   ];
 
   List navItem = [
     {'icon':Icons.home,'title':'记录'},
-    {'icon':Icons.local_pizza,'title':'圈子'},
-    {'icon':Icons.edit,'title':'计划'},
+    {'icon':Icons.search,'title':'查找'},
     {'icon':Icons.person,'title':'我的'},
   ];
 
