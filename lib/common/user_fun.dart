@@ -145,4 +145,18 @@ class UserFun{
       return null;
     }
   }
+  Future<Map> searchUser(String phone) async {
+    try {
+      Response response = await Dio().get("${this.serverUrl}search/$phone",
+      );
+      if(response.data['status']==200){
+        return {'user':response.data['user']};
+      }else{
+        return {'msg': response.data['message']};
+      }
+    } on DioError catch (e) {
+      print(e);
+      return {'msg':'无法连接到服务器'};
+    }
+  }
 }

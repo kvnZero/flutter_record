@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import 'record/record_home.dart';
+import 'search/search_index.dart';
 class Index extends StatefulWidget {
   @override
   _IndexState createState() => _IndexState();
@@ -13,7 +14,7 @@ class _IndexState extends State<Index> {
 
   List<Widget> pageView = [
     RecordHomePage(),
-    RecordHomePage(),
+    SearchIndexPage(),
     RecordHomePage(),
   ];
 
