@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:record/common/bind_fun.dart';
 import 'package:record/data/model/auth.dart';
 import 'package:provider/provider.dart';
-import 'package:record/data/event/user_update.dart';
+import 'package:record/data/event/event.dart';
 
 class BindShowPage extends StatefulWidget {
   const BindShowPage({

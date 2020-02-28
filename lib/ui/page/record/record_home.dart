@@ -9,7 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:record/common/adapt.dart';
 import 'package:record/ui/page/bind/bind_show.dart';
-import 'package:record/data/event/user_update.dart';
+import 'package:record/data/event/event.dart';
+import 'record_push.dart';
 
 class RecordHomePage extends StatefulWidget {
   @override
@@ -49,6 +50,9 @@ class _RecordHomePageState extends State<RecordHomePage> with AutomaticKeepAlive
       addRecordData();
       getMsgData();
     });
+    eventBus.on<RecordUpdateEvent>().listen((_) {
+      addRecordData();
+    });
   }
 
   void addRecordData() async{
@@ -68,6 +72,7 @@ class _RecordHomePageState extends State<RecordHomePage> with AutomaticKeepAlive
       }
     }
     if(_saveBind != null && _saveUser!= null){
+      recordData = [];
       Future<Map> result =  RecordFun().getRecord(_saveBind['id'].toString(), _saveUser['id'].toString());
       result.then((e){
         setState(() {
@@ -188,7 +193,9 @@ class _RecordHomePageState extends State<RecordHomePage> with AutomaticKeepAlive
         tooltip: 'Add',
         child: Icon(Icons.add),
         onPressed: (){
-          print("1");
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return RecordPushPage(bindId: _saveBind['id'],userId: _saveUser['id'],);
+          }));
         },
       )
     );
