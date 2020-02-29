@@ -77,7 +77,7 @@ class _BindShowPageState extends State<BindShowPage> {
                   ),
                   margin: EdgeInsets.only(bottom: 10),
                 ),
-                Text("这里整些甜言蜜语",style: TextStyle(fontSize: 16),),
+                Text(bindList['text']==null ? '对方没有请求留言' : bindList['text'],style: TextStyle(fontSize: 16),),
               ],
             ),
             Row(
