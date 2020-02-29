@@ -32,7 +32,7 @@ class _RecordHomePageState extends State<RecordHomePage> with AutomaticKeepAlive
   @override
   void initState() {
     _controller.addListener((){
-      if(_controller.offset>100){
+      if(_controller.offset>Adapt.px(120)){
         setState(() {
           showText=true;
         });
