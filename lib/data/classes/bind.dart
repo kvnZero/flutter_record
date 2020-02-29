@@ -21,13 +21,16 @@ class Bind extends Object {
   @JsonKey(name: 'bind_time')
   String bindTime;
 
+  @JsonKey(name: 'text')
+  String text;
+
   @JsonKey(name: 'create_time')
   String createTime;
 
   @JsonKey(name: 'update_time')
   String updateTime;
 
-  Bind(this.id,this.userIdFrom,this.userIdTo,this.status,this.bindTime,this.createTime,this.updateTime,);
+  Bind(this.id,this.userIdFrom,this.userIdTo,this.status,this.bindTime,this.text,this.createTime,this.updateTime,);
 
   factory Bind.fromJson(Map<String, dynamic> srcJson) => _$BindFromJson(srcJson);
 

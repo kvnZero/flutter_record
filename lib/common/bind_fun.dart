@@ -44,4 +44,18 @@ class BindFun{
       return {'msg': '无法连接到服务器'};
     }
   }
+  Future<Map> sendBind(String useIdFrom,String userIdTo,String text,{Map other}) async {
+    Map data = {'user_id_from': useIdFrom,'user_id_to': userIdTo,'text':text};
+    if (other != null) {
+      data.addAll(other);
+      print(data.toString());
+    }
+    try {
+      Response response = await Dio().post("${this.serverUrl}send", data: data);
+      return {'data': response.data};
+    } on DioError catch (e) {
+      print(e);
+      return {'msg': '无法连接到服务器'};
+    }
+  }
 }

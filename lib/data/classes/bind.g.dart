@@ -13,6 +13,7 @@ Bind _$BindFromJson(Map<String, dynamic> json) {
     json['user_id_to'] as int,
     json['status'] as int,
     json['bind_time'] as String,
+    json['text'] as String,
     json['create_time'] as String,
     json['update_time'] as String,
   );
@@ -24,6 +25,7 @@ Map<String, dynamic> _$BindToJson(Bind instance) => <String, dynamic>{
       'user_id_to': instance.userIdTo,
       'status': instance.status,
       'bind_time': instance.bindTime,
+      'text': instance.text,
       'create_time': instance.createTime,
       'update_time': instance.updateTime,
     };
