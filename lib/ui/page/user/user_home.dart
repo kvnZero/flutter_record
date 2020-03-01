@@ -122,7 +122,7 @@ class UserHomePageState extends State<UserHomePage>
     for (int i = 0; i < listButton.length; i++) {
       List<Widget> _list = [];
       for (int j = 0; j < listButton[i].length; j++) {
-        _list.add(NavButton(listButton[i][j]['icon'], listButton[i][j]['color'],
+        _list.add(navButton(listButton[i][j]['icon'], listButton[i][j]['color'],
             listButton[i][j]['title'],
             text: listButton[i][j]['text'], value: listButton[i][j]['value']));
       }
@@ -152,18 +152,15 @@ class UserHomePageState extends State<UserHomePage>
         ),
         centerTitle: false,
       ),
-      body: RefreshIndicator(
-          child: ListView(
-            children: <Widget>[
-              userInfo(),
-              Container(
-                child: createList(),
-              ),
-              logoutButton()
-//            createList(),
-            ],
+      body: ListView(
+        children: <Widget>[
+          userInfo(),
+          Container(
+            child: createList(),
           ),
-          onRefresh: () {}),
+          logoutButton()
+        ],
+      ),
     );
   }
 
@@ -177,9 +174,8 @@ class UserHomePageState extends State<UserHomePage>
     );
   }
 
-  Widget NavButton(IconData icon, Color iconColor, String title,
+  Widget navButton(IconData icon, Color iconColor, String title,
       {String text = '', int value = 0}) {
-    TextStyle redtextstyle = TextStyle(fontSize: 8, color: Colors.white);
     Widget redB = Icon(icon, size: 28, color: iconColor);
     return FlatButton(
         onPressed: () {
