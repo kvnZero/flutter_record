@@ -34,9 +34,9 @@
       <td align="center" width="200" valign="top">
         <img src="images/show/4.png" width=200>
       </td>
-        <td align="center" width="200" valign="top">
-          <img src="images/show/.png" width=200>
-        </td>
+      <td align="center" width="200" valign="top">
+        <img src="images/show/5.png" width=200>
+      </td>
      </tr>
   </tbody>
 </table>
