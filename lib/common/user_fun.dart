@@ -179,4 +179,19 @@ class UserFun{
       return {'msg':'无法连接到服务器'};
     }
   }
+  Future<Map> uploadNickname(String userId,String nickname) async{
+    try {
+      Response response = await Dio().post("${this.serverUrl}upload",
+          data: {'user_id':userId, 'nickname': nickname}
+      );
+      if(response.data['status'] == 200){
+        return {'msg': response.data['message'],'nickname':response.data['nickname']};
+      }else{
+        return {'msg':response.data['message']};
+      }
+    } on DioError catch (e) {
+      print(e);
+      return {'msg':'无法连接到服务器'};
+    }
+  }
 }
