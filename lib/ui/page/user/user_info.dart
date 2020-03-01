@@ -6,7 +6,6 @@ import 'package:record/data/model/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
-import 'package:record/data/event/event.dart';
 
 class UserInfoPage extends StatefulWidget {
   @override

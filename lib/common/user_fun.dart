@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:record/data/classes/user.dart';
 import 'package:record/data/classes/bind.dart';
 import 'dart:async';
-import 'dart:io';
 
 class UserFun{
   String serverUrl = 'http://192.168.1.5:8000/';
@@ -172,8 +171,11 @@ class UserFun{
       Response response = await Dio().post("${this.serverUrl}upload",data: formData);
       if(response.data['status'] == 200){
         return {'msg': response.data['message'],'url':response.data['url']};
+      }else{
+        return {'msg':response.data['message']};
       }
     } on DioError catch (e) {
+      print(e);
       return {'msg':'无法连接到服务器'};
     }
   }
