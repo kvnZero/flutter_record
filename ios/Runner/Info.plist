@@ -41,5 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>用于选择图片上传照片成为头像</string>
+    <key>NSCameraUsageDescription</key>
+    <string>用于拍摄照片上传照片成为头像</string>
 </dict>
 </plist>

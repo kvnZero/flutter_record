@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:record/data/model/auth.dart';
 import 'package:provider/provider.dart';
-
+import 'user_info.dart';
 class UserHomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -41,7 +41,11 @@ class UserHomePageState extends State<UserHomePage>
 
   Widget userInfo() {
     Widget userinfo = FlatButton(
-        onPressed: () {},
+        onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return UserInfoPage();
+        }));
+
+        },
         padding: EdgeInsets.zero,
         child: Padding(
           padding: EdgeInsets.all(10),
@@ -60,7 +64,7 @@ class UserHomePageState extends State<UserHomePage>
                             borderRadius: BorderRadius.circular(8.0),
                             child: Image.network(
                               user.user.avater,
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                             )),
                       ),
                       Padding(
