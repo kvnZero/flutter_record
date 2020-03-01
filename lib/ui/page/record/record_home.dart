@@ -72,11 +72,16 @@ class _RecordHomePageState extends State<RecordHomePage> with AutomaticKeepAlive
       }
     }
     if(_saveBind != null && _saveUser!= null){
-      recordData = [];
+      setState(() {
+        recordData = [];
+      });
       Future<Map> result =  RecordFun().getRecord(_saveBind['id'].toString(), _saveUser['id'].toString());
       result.then((e){
-        setState(() {
-          recordData.addAll(e['data']);
+        print(e['data']);
+        Future.delayed(Duration(milliseconds: 100), () {
+          setState(() {
+            recordData=e['data'];
+          });
         });
       });
     }
