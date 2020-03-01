@@ -59,6 +59,7 @@ class UserFun{
     }
   }
   Future<Map> sendcode(String phone) async{
+    //这个函数需要修改 才能使用
     try {
       Response response = await Dio().get("${this.serverUrl}code/$phone");
       print(response.data);
@@ -72,6 +73,7 @@ class UserFun{
     return {'msg':'未知错误'};
   }
   Future<bool> check(String phone) async{
+    //这个函数需要修改 才能使用
     try {
       Response response = await Dio().get("${this.serverUrl}check/$phone");
       print(response.data);
@@ -86,6 +88,7 @@ class UserFun{
     return false;
   }
   Future<Map> reg(String phone,String password, String code) async{
+    //这个函数需要修改 才能使用
     try {
       Response response = await Dio().post("${this.serverUrl}reg",
           data: {'username':phone.trim(), 'password': password, 'code':code.trim()}
@@ -111,6 +114,7 @@ class UserFun{
     return {'msg':'未知错误'};
   }
   Future<Map> find(String phone,String password, String code) async{
+    //这个函数需要修改 才能使用
     try {
       Response response = await Dio().post("${this.serverUrl}find",
           data: {'username':phone.trim(), 'password': password, 'code':code.trim()}
