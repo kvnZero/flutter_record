@@ -95,7 +95,7 @@ class LoginPageState extends State<LoginPage>{
                                         Navigator.pop(_dialogC);
                                         if (v.isNotEmpty) {
                                           //如果报错 toast错误
-                                          Toast.show(v, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                                          Toast.show(v, context, duration: Toast.LENGTH_LONG, gravity:  Toast.TOP);
                                         }
                                       });
                                       isLogin=false;
@@ -105,7 +105,7 @@ class LoginPageState extends State<LoginPage>{
                                        }
                                      }else{
                                        //如果输入有误 toast错误
-                                       Toast.show("请检查输入", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                                       Toast.show("请检查输入", context, duration: Toast.LENGTH_LONG, gravity:  Toast.TOP);
                                      }
                                    },
                                  );
