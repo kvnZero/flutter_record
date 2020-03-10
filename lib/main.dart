@@ -3,8 +3,15 @@ import 'package:record/data/model/auth.dart';
 import 'package:record/ui/page/user/login.dart';
 import 'package:provider/provider.dart';
 import 'ui/page/index.dart';
-
+import 'dart:io';
+import 'package:flutter/services.dart';
 void main(){
+  if (Platform.isAndroid) {
+    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,  //设置为透明
+    );
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
   runApp(MyApp());
 }
 
@@ -29,7 +36,7 @@ class _MyHomePageState extends State<MyApp> {
       ChangeNotifierProvider(create: (context)=>_auth)
     ],
       child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Record',
           theme: ThemeData(
             primaryColor: Colors.white,
           ),
