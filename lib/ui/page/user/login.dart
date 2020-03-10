@@ -92,12 +92,12 @@ class LoginPageState extends State<LoginPage>{
                                     Future.delayed(Duration(seconds: 1), (){
                                       //延迟一秒 防止异步出错
                                       msg.then((v){
+                                        Navigator.pop(_dialogC);
                                         if (v.isNotEmpty) {
                                           //如果报错 toast错误
-                                          Toast.show(v, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                                          Toast.show(v, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
                                         }
                                       });
-                                      Navigator.pop(_dialogC);
                                       isLogin=false;
                                     });
                                        }else{
@@ -105,7 +105,7 @@ class LoginPageState extends State<LoginPage>{
                                        }
                                      }else{
                                        //如果输入有误 toast错误
-                                       Toast.show("请检查输入", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+                                       Toast.show("请检查输入", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
                                      }
                                    },
                                  );
